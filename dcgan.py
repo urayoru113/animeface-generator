@@ -49,16 +49,16 @@ class Discriminator:
             # convolution x 4
             with tf.variable_scope('conv1'):
                 outputs = tf.layers.conv2d(outputs, self.depths[1], [5, 5], strides=(2, 2), padding='SAME')
-                outputs = tf.nn.elu(tf.layers.batch_normalization(outputs, training=training), name='outputs')
+                outputs = leaky_relu(tf.layers.batch_normalization(outputs, training=training), name='outputs')
             with tf.variable_scope('conv2'):
                 outputs = tf.layers.conv2d(outputs, self.depths[2], [5, 5], strides=(2, 2), padding='SAME')
-                outputs = tf.nn.elu(tf.layers.batch_normalization(outputs, training=training), name='outputs')
+                outputs = leaky_relu(tf.layers.batch_normalization(outputs, training=training), name='outputs')
             with tf.variable_scope('conv3'):
                 outputs = tf.layers.conv2d(outputs, self.depths[3], [5, 5], strides=(2, 2), padding='SAME')
-                outputs = tf.nn.elu(tf.layers.batch_normalization(outputs, training=training), name='outputs')
+                outputs = leaky_relu(tf.layers.batch_normalization(outputs, training=training), name='outputs')
             with tf.variable_scope('conv4'):
                 outputs = tf.layers.conv2d(outputs, self.depths[4], [5, 5], strides=(2, 2), padding='SAME')
-                outputs = tf.nn.elu(tf.layers.batch_normalization(outputs, training=training), name='outputs')
+                outputs = leaky_relu(tf.layers.batch_normalization(outputs, training=training), name='outputs')
             with tf.variable_scope('classify'):
                 batch_size = outputs.get_shape()[0].value
                 reshape = tf.reshape(outputs, [batch_size, -1])
@@ -82,10 +82,8 @@ class DCGAN:
 
     def loss(self, traindata):
         """build models, calculate losses.
-
         Args:
             traindata: 4-D Tensor of shape `[batch, height, width, channels]`.
-
         Returns:
             dict of each models' losses.
         """
@@ -120,7 +118,6 @@ class DCGAN:
         """
         Args:
             losses dict.
-
         Returns:
             train op.
         """
